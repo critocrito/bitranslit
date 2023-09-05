@@ -76,21 +76,16 @@ fn read_standard(file: &Path) -> Vec<Mapping> {
     mappings
 }
 
-fn write_standard_file(standard: &Standard, file: &mut File) -> Result<(), std::io::Error> {
+fn write_standard_in_file(standard: &Standard, file: &mut File) -> Result<(), std::io::Error> {
     let mappings = read_standard(&standard.path);
 
-    writeln!(file, "pub fn {}() -> CharsMapping {{", standard.standard)?;
-    writeln!(file, "    [")?;
+    writeln!(file, "[")?;
 
     for (a, b) in mappings {
-        writeln!(file, r#"        ("{}", "{}"),"#, a.as_str(), b.as_str())?;
+        writeln!(file, r#"    ("{}", "{}"),"#, a.as_str(), b.as_str())?;
     }
 
-    writeln!(file, "    ]")?;
-    writeln!(file, "    .iter()")?;
-    writeln!(file, "    .cloned()")?;
-    writeln!(file, "    .collect()")?;
-    writeln!(file, "}}\n")?;
+    writeln!(file, "]")?;
 
     Ok(())
 }
@@ -111,25 +106,17 @@ fn main() {
 
     create_dir_all("src/standards").unwrap();
 
-    let mod_name = "src/standards.rs";
-    let mut mod_file = File::create(&mod_name).unwrap();
-
     for language in languages {
         let language_standards: Vec<&Standard> = standards
             .iter()
             .filter(|s| s.language == language)
             .collect();
 
-        let module_name = format!("src/standards/{}.rs", language);
+        let module_name = format!("src/standards/{}.in", language);
         let mut module = File::create(&module_name).unwrap();
 
-        writeln!(module, "use crate::CharsMapping;").unwrap();
-        writeln!(module, "").unwrap();
-
         for standard in language_standards {
-            write_standard_file(&standard, &mut module).unwrap();
+            write_standard_in_file(standard, &mut module).unwrap();
         }
-
-        writeln!(mod_file, "pub mod {};", language).unwrap();
     }
 }
