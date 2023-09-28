@@ -26,13 +26,7 @@ impl Transliterator {
     pub fn new(standard: CharsMapping) -> Self {
         let mut rules = standard;
         fn compare_len(left: &str, right: &str) -> Ordering {
-            if left.len() == right.len() {
-                Ordering::Equal
-            } else if left.len() > right.len() {
-                Ordering::Greater
-            } else {
-                Ordering::Less
-            }
+            left.len().cmp(&right.len())
         }
         // sort by Latin string
         rules.sort_by(|a, b| compare_len(b.1, a.1));
