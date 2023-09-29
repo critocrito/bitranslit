@@ -3,10 +3,10 @@ use transliteratsiya_derive::{FromLatin, LanguagePack, ToLatin};
 
 use crate::CharsMapping;
 
-static BG: [(&str, &str); 60] = include!("standards/bg.in");
-static RU: [(&str, &str); 64] = include!("standards/ru.in");
-static BY: [(&str, &str); 63] = include!("standards/by.in");
-static UA: [(&str, &str); 65] = include!("standards/ua.in");
+static BG: [(&str, &str); 61] = include!("standards/bg.in");
+static RU: [(&str, &str); 65] = include!("standards/ru.in");
+static BY: [(&str, &str); 64] = include!("standards/by.in");
+static UA: [(&str, &str); 66] = include!("standards/ua.in");
 
 /// The contract for transliteration in the Latin alphabet
 pub trait ToLatin {

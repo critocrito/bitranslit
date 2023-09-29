@@ -62,7 +62,9 @@ fn read_standard(file: &Path) -> Vec<Mapping> {
     let mut mappings = vec![];
 
     let file = File::open(file).unwrap();
-    let mut rdr = csv::Reader::from_reader(file);
+    let mut rdr = csv::ReaderBuilder::new()
+        .has_headers(false)
+        .from_reader(file);
 
     for record in rdr.records() {
         let record = record.unwrap();
