@@ -33,7 +33,7 @@ fn impl_language_pack(ast: &syn::DeriveInput) -> TokenStream {
 
         tokens.into()
     } else {
-        panic!("#[derive(ToLatin)] is only defined for structs, not for enums!");
+        panic!("#[derive(LanguagePack)] is only defined for structs, not for enums!");
     }
 }
 
