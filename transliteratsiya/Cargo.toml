@@ -2,6 +2,7 @@
 name = "transliteratsiya"
 version = "0.1.0"
 edition = "2021"
+description = "Bi-directional transliterator for Rust. Transliterates strings according to the rules specified in the language packs."
 
 [dependencies]
 transliteratsiya_derive = { path = "../transliteratsiya_derive" }
