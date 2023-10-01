@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-use crate::CharsMapping;
+type CharsMapping = Vec<(&'static str, &'static str)>;
 
 /// The contract for transliteration from the source language to the Latin
 /// alphabet.

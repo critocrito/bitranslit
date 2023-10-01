@@ -1,12 +1,32 @@
 pub mod languages;
 pub mod transliterator;
 
-pub use crate::languages::Language;
 pub use crate::languages::{
     armenian::Armenian, bulgarian::Bulgarian, russian::Russian, ukranian::Ukranian,
 };
 
-pub type CharsMapping = Vec<(&'static str, &'static str)>;
+use crate::transliterator::{FromLatin, ToLatin, Transliterator};
+
+pub enum SupportedLanguage {
+    Armenian,
+    Bulgarian,
+    Russian,
+    Ukranian,
+}
+
+pub fn transliterate(input: &str, language: SupportedLanguage, reverse: bool) -> String {
+    let language_pack: Transliterator = match language {
+        SupportedLanguage::Armenian => Armenian::new(),
+        SupportedLanguage::Bulgarian => Bulgarian::new(),
+        SupportedLanguage::Russian => Russian::new(),
+        SupportedLanguage::Ukranian => Ukranian::new(),
+    };
+
+    match reverse {
+        true => language_pack.to_latin(input),
+        false => language_pack.from_latin(input),
+    }
+}
 
 #[cfg(test)]
 mod tests {
