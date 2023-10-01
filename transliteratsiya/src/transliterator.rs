@@ -1,4 +1,4 @@
-use std::cmp::Ordering;
+use derive_builder::Builder;
 
 type CharsMapping = Vec<(&'static str, &'static str)>;
 
@@ -14,8 +14,9 @@ pub trait FromLatin {
     fn from_latin(&self, input: &str) -> String;
 }
 
-#[derive(Debug)]
+#[derive(Debug, Builder, Default)]
 pub struct Transliterator {
+    #[builder(setter(into))]
     pub language: String,
     mapping: CharsMapping,
     pre_processor_mapping: Option<CharsMapping>,
@@ -23,31 +24,7 @@ pub struct Transliterator {
     reverse_specific_pre_processor_mapping: Option<CharsMapping>,
 }
 
-// FIXME: Implement Builder to construct Transliterator.
 impl Transliterator {
-    pub fn new(
-        language: &str,
-        mapping: CharsMapping,
-        pre_processor_mapping: Option<CharsMapping>,
-        reverse_specific_mapping: Option<CharsMapping>,
-        reverse_specific_pre_processor_mapping: Option<CharsMapping>,
-    ) -> Self {
-        let mut mapping = mapping;
-        fn compare_len(left: &str, right: &str) -> Ordering {
-            left.len().cmp(&right.len())
-        }
-        // sort by Latin string
-        mapping.sort_by(|a, b| compare_len(b.0, a.0));
-
-        Self {
-            language: language.to_string(),
-            mapping,
-            pre_processor_mapping,
-            reverse_specific_mapping,
-            reverse_specific_pre_processor_mapping,
-        }
-    }
-
     pub fn translit(&self, input: &str, reverse: bool) -> String {
         let mut input = input.to_owned();
 

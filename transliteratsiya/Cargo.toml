@@ -7,6 +7,7 @@ description = "Bi-directional transliterator for Rust. Transliterates strings ac
 [dependencies]
 transliteratsiya_derive = { path = "../transliteratsiya_derive" }
 lazy_static = "1.4"
+derive_builder = "0.12.0"
 
 [build-dependencies]
 csv = "1.2.2"

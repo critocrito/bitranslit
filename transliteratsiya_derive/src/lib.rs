@@ -127,20 +127,21 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 };
 
             quote! {
-                use crate::transliterator::{Transliterator};
+                use crate::transliterator::{Transliterator, TransliteratorBuilder};
 
                 #[derive(Debug)]
                 pub struct #language;
 
                 impl #language {
                     pub fn new() -> Transliterator {
-                        Transliterator::new(
-                            stringify!(#language),
-                            #mapping,
-                            #pre_processor_mapping,
-                            #reverse_specific_mapping,
-                            #reverse_specific_pre_processor_mapping,
-                        )
+                        TransliteratorBuilder::default()
+                            .language(stringify!(#language))
+                            .mapping(#mapping)
+                            .pre_processor_mapping(#pre_processor_mapping)
+                            .reverse_specific_mapping(#reverse_specific_mapping)
+                            .reverse_specific_pre_processor_mapping(#reverse_specific_pre_processor_mapping)
+                            .build()
+                            .unwrap()
                     }
                 }
             }
