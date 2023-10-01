@@ -10,6 +10,8 @@ type Mapping = (String, String);
 struct Standard {
     mapping: PathBuf,
     pre_processor_mapping: Option<PathBuf>,
+    reverse_specific_mapping: Option<PathBuf>,
+    reverse_specific_pre_processor_mapping: Option<PathBuf>,
 }
 
 fn list_languages() -> Vec<String> {
@@ -31,6 +33,11 @@ fn list_languages() -> Vec<String> {
 fn read_standard(dir_name: &Path, language: &str) -> Standard {
     let mapping_file = dir_name.join(language).join("mapping.csv");
     let pre_processor_mapping_file = dir_name.join(language).join("pre_processor_mapping.csv");
+    let reverse_specific_mapping_file =
+        dir_name.join(language).join("reverse_specific_mapping.csv");
+    let reverse_specific_pre_processor_mapping_file = dir_name
+        .join(language)
+        .join("reverse_specific_pre_processor_mapping.csv");
 
     let mapping = match mapping_file.try_exists() {
         Ok(true) => mapping_file,
@@ -42,22 +49,50 @@ fn read_standard(dir_name: &Path, language: &str) -> Standard {
         Ok(false) | Err(_) => None,
     };
 
+    let reverse_specific_mapping = match reverse_specific_mapping_file.try_exists() {
+        Ok(true) => Some(reverse_specific_mapping_file),
+        Ok(false) | Err(_) => None,
+    };
+
+    let reverse_specific_pre_processor_mapping =
+        match reverse_specific_pre_processor_mapping_file.try_exists() {
+            Ok(true) => Some(reverse_specific_pre_processor_mapping_file),
+            Ok(false) | Err(_) => None,
+        };
+
     Standard {
         mapping,
         pre_processor_mapping,
+        reverse_specific_mapping,
+        reverse_specific_pre_processor_mapping,
     }
 }
 
 fn write_standard(dir_name: &Path, standard: Standard) {
     let mapping_in = dir_name.join("mapping.in");
-    let pre_processor_maping_in = dir_name.join("pre_processor_mapping.in");
+    let pre_processor_mapping_in = dir_name.join("pre_processor_mapping.in");
+    let reverse_specific_mapping_in = dir_name.join("reverse_specific_mapping.in");
+    let reverse_specific_pre_processor_mapping_in =
+        dir_name.join("reverse_specific_pre_processor_mapping.in");
 
     let mut module = File::create(&mapping_in).unwrap();
     write_standard_in_file(&standard.mapping, &mut module).unwrap();
 
     if let Some(pre_processor_mapping) = &standard.pre_processor_mapping {
-        let mut module = File::create(&pre_processor_maping_in).unwrap();
+        let mut module = File::create(&pre_processor_mapping_in).unwrap();
         write_standard_in_file(&pre_processor_mapping, &mut module).unwrap();
+    }
+
+    if let Some(reverse_specific_mapping) = &standard.reverse_specific_mapping {
+        let mut module = File::create(&reverse_specific_mapping_in).unwrap();
+        write_standard_in_file(&reverse_specific_mapping, &mut module).unwrap();
+    }
+
+    if let Some(reverse_specific_pre_processor_mapping) =
+        &standard.reverse_specific_pre_processor_mapping
+    {
+        let mut module = File::create(&reverse_specific_pre_processor_mapping_in).unwrap();
+        write_standard_in_file(&reverse_specific_pre_processor_mapping, &mut module).unwrap();
     }
 }
 

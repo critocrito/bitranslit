@@ -2,11 +2,12 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 
 pub use transliteratsiya::{
     transliterator::{FromLatin, ToLatin},
-    Bulgarian,
+    Armenian, Bulgarian,
 };
 
 const LATIN: &'static str = "Lorem ipsum dolor sit amet";
 const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
+const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
 
 fn from_bg(_n: u64) {
     let t = Bulgarian::new();
@@ -20,9 +21,23 @@ fn to_bg(_n: u64) {
     let _ = t.from_latin(&LATIN);
 }
 
+fn from_hy(_n: u64) {
+    let t = Armenian::new();
+
+    let _ = t.to_latin(&ARMENIAN);
+}
+
+fn to_hy(_n: u64) {
+    let t = Armenian::new();
+
+    let _ = t.from_latin(&LATIN);
+}
+
 fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("from_bg", |b| b.iter(|| from_bg(black_box(20))));
     c.bench_function("to_bg", |b| b.iter(|| to_bg(black_box(20))));
+    c.bench_function("from_hy", |b| b.iter(|| from_hy(black_box(20))));
+    c.bench_function("to_hy", |b| b.iter(|| to_hy(black_box(20))));
 }
 
 criterion_group!(benches, criterion_benchmark);

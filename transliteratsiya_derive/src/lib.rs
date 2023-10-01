@@ -60,6 +60,15 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 .iter()
                 .find(|&f| f.ident.as_ref().unwrap().to_string() == "pre_processor_mapping");
 
+            let reverse_specific_mapping_field = expr
+                .fields
+                .iter()
+                .find(|&f| f.ident.as_ref().unwrap().to_string() == "reverse_specific_mapping");
+
+            let reverse_specific_pre_processor_mapping_field = expr.fields.iter().find(|&f| {
+                f.ident.as_ref().unwrap().to_string() == "reverse_specific_pre_processor_mapping"
+            });
+
             let mapping = match &mapping_field.ty {
                 Type::Path(type_path) => {
                     let mapping = &type_path.path.segments.first().unwrap().ident;
@@ -84,6 +93,39 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 quote! { None }
             };
 
+            let reverse_specific_mapping = if let Some(field) = reverse_specific_mapping_field {
+                match &field.ty {
+                    Type::Path(type_path) => {
+                        let mapping = &type_path.path.segments.first().unwrap().ident;
+
+                        quote! { Some(#mapping.iter().cloned().collect()) }
+                    }
+                    _ => panic!(
+                        "Not a valid pre_processor_mapping for language {}",
+                        language
+                    ),
+                }
+            } else {
+                quote! { None }
+            };
+
+            let reverse_specific_pre_processor_mapping =
+                if let Some(field) = reverse_specific_pre_processor_mapping_field {
+                    match &field.ty {
+                        Type::Path(type_path) => {
+                            let mapping = &type_path.path.segments.first().unwrap().ident;
+
+                            quote! { Some(#mapping.iter().cloned().collect()) }
+                        }
+                        _ => panic!(
+                            "Not a valid pre_processor_mapping for language {}",
+                            language
+                        ),
+                    }
+                } else {
+                    quote! { None }
+                };
+
             quote! {
                 use crate::{transliterator::{FromLatin, ToLatin, Transliterator}, Language};
 
@@ -95,20 +137,25 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 impl #language {
                     pub fn new() -> Self {
                         Self {
-                            translit: Transliterator::new(#mapping, #pre_processor_mapping)
+                            translit: Transliterator::new(
+                                #mapping,
+                                #pre_processor_mapping,
+                                #reverse_specific_mapping,
+                                #reverse_specific_pre_processor_mapping,
+                            )
                         }
                     }
                 }
 
                 impl FromLatin for #language {
                     fn from_latin(&self, input: &str) -> String {
-                        self.translit.translit(&input, true)
+                        self.translit.translit(&input, false)
                     }
                 }
 
                 impl ToLatin for #language {
                     fn to_latin(&self, input: &str) -> String {
-                        self.translit.translit(&input, false)
+                        self.translit.translit(&input, true)
                     }
                 }
 

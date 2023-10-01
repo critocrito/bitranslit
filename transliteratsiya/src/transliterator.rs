@@ -18,25 +18,52 @@ pub trait FromLatin {
 pub struct Transliterator {
     mapping: CharsMapping,
     pre_processor_mapping: Option<CharsMapping>,
+    reverse_specific_mapping: Option<CharsMapping>,
+    reverse_specific_pre_processor_mapping: Option<CharsMapping>,
 }
 
 impl Transliterator {
-    pub fn new(mapping: CharsMapping, pre_processor_mapping: Option<CharsMapping>) -> Self {
+    pub fn new(
+        mapping: CharsMapping,
+        pre_processor_mapping: Option<CharsMapping>,
+        reverse_specific_mapping: Option<CharsMapping>,
+        reverse_specific_pre_processor_mapping: Option<CharsMapping>,
+    ) -> Self {
         let mut mapping = mapping;
         fn compare_len(left: &str, right: &str) -> Ordering {
             left.len().cmp(&right.len())
         }
         // sort by Latin string
-        mapping.sort_by(|a, b| compare_len(b.1, a.1));
+        mapping.sort_by(|a, b| compare_len(b.0, a.0));
 
         Self {
             mapping,
             pre_processor_mapping,
+            reverse_specific_mapping,
+            reverse_specific_pre_processor_mapping,
         }
     }
 
     pub fn translit(&self, input: &str, reverse: bool) -> String {
         let mut input = input.to_owned();
+
+        if reverse {
+            if let Some(mapping) = &self.reverse_specific_mapping {
+                for elem in mapping.iter() {
+                    let (source_char, translit_char) = (elem.0, elem.1);
+
+                    input = input.replace(source_char, translit_char);
+                }
+            }
+
+            if let Some(mapping) = &self.reverse_specific_pre_processor_mapping {
+                for elem in mapping.iter() {
+                    let (source_char, translit_char) = (elem.0, elem.1);
+
+                    input = input.replace(source_char, translit_char);
+                }
+            }
+        }
 
         if let Some(mapping) = &self.pre_processor_mapping {
             for elem in mapping.iter() {
