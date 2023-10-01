@@ -14,49 +14,49 @@ const UKRANIAN: &'static str = "Лорем іпсум долор сіт амет
 fn from_bg(_n: u64) {
     let t = Bulgarian::new();
 
-    let _ = t.to_latin(&BULGARIAN);
+    let _ = t.translit(&BULGARIAN);
 }
 
 fn to_bg(_n: u64) {
     let t = Bulgarian::new();
 
-    let _ = t.from_latin(&LATIN);
+    let _ = t.translit_reverse(&LATIN);
 }
 
 fn from_hy(_n: u64) {
     let t = Armenian::new();
 
-    let _ = t.to_latin(&ARMENIAN);
+    let _ = t.translit(&ARMENIAN);
 }
 
 fn to_hy(_n: u64) {
     let t = Armenian::new();
 
-    let _ = t.from_latin(&LATIN);
+    let _ = t.translit_reverse(&LATIN);
 }
 
 fn from_ru(_n: u64) {
     let t = Russian::new();
 
-    let _ = t.to_latin(&RUSSIAN);
+    let _ = t.translit(&RUSSIAN);
 }
 
 fn to_ru(_n: u64) {
     let t = Russian::new();
 
-    let _ = t.from_latin(&LATIN);
+    let _ = t.translit_reverse(&LATIN);
 }
 
 fn from_ua(_n: u64) {
     let t = Ukranian::new();
 
-    let _ = t.to_latin(&UKRANIAN);
+    let _ = t.translit(&UKRANIAN);
 }
 
 fn to_ua(_n: u64) {
     let t = Ukranian::new();
 
-    let _ = t.from_latin(&LATIN);
+    let _ = t.translit_reverse(&LATIN);
 }
 
 fn criterion_benchmark(c: &mut Criterion) {

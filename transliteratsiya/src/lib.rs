@@ -23,8 +23,8 @@ pub fn transliterate(input: &str, language: SupportedLanguage, reverse: bool) ->
     };
 
     match reverse {
-        true => language_pack.to_latin(input),
-        false => language_pack.from_latin(input),
+        true => language_pack.translit(input),
+        false => language_pack.translit_reverse(input),
     }
 }
 
@@ -43,7 +43,7 @@ mod tests {
     fn bulgarian_to_latin() {
         let t = Bulgarian::new();
 
-        let output = t.to_latin(&BULGARIAN);
+        let output = t.translit(&BULGARIAN);
 
         assert_eq!(output, LATIN.to_string());
     }
@@ -52,7 +52,7 @@ mod tests {
     fn latin_to_bulgarian() {
         let t = Bulgarian::new();
 
-        let output = t.from_latin(&LATIN);
+        let output = t.translit_reverse(&LATIN);
 
         assert_eq!(output, BULGARIAN.to_string());
     }
@@ -61,7 +61,7 @@ mod tests {
     fn armenian_to_latin() {
         let t = Armenian::new();
 
-        let output = t.to_latin(&ARMENIAN);
+        let output = t.translit(&ARMENIAN);
 
         assert_eq!(output, LATIN.to_string());
     }
@@ -70,7 +70,7 @@ mod tests {
     fn latin_to_armenian() {
         let t = Armenian::new();
 
-        let output = t.from_latin(&LATIN);
+        let output = t.translit_reverse(&LATIN);
 
         assert_eq!(output, ARMENIAN.to_string());
     }
@@ -79,7 +79,7 @@ mod tests {
     fn russian_to_latin() {
         let t = Russian::new();
 
-        let output = t.to_latin(&RUSSIAN);
+        let output = t.translit(&RUSSIAN);
 
         assert_eq!(output, LATIN.to_string());
     }
@@ -88,7 +88,7 @@ mod tests {
     fn latin_to_russian() {
         let t = Russian::new();
 
-        let output = t.from_latin(&LATIN);
+        let output = t.translit_reverse(&LATIN);
 
         assert_eq!(output, RUSSIAN.to_string());
     }
@@ -97,7 +97,7 @@ mod tests {
     fn ukranian_to_latin() {
         let t = Ukranian::new();
 
-        let output = t.to_latin(&UKRANIAN);
+        let output = t.translit(&UKRANIAN);
 
         assert_eq!(output, LATIN.to_string());
     }
@@ -106,7 +106,7 @@ mod tests {
     fn latin_to_ukranian() {
         let t = Ukranian::new();
 
-        let output = t.from_latin(&LATIN);
+        let output = t.translit_reverse(&LATIN);
 
         assert_eq!(output, UKRANIAN.to_string());
     }

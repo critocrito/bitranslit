@@ -5,13 +5,13 @@ type CharsMapping = Vec<(&'static str, &'static str)>;
 /// The contract for transliteration from the source language to the Latin
 /// alphabet.
 pub trait ToLatin {
-    fn to_latin(&self, input: &str) -> String;
+    fn translit(&self, input: &str) -> String;
 }
 
 /// The contract for transliteration from the Latin alphabet to the source
 /// language.
 pub trait FromLatin {
-    fn from_latin(&self, input: &str) -> String;
+    fn translit_reverse(&self, input: &str) -> String;
 }
 
 #[derive(Debug, Builder, Default)]
@@ -73,13 +73,13 @@ impl Transliterator {
 }
 
 impl ToLatin for Transliterator {
-    fn to_latin(&self, input: &str) -> String {
+    fn translit(&self, input: &str) -> String {
         self.translit(input, true)
     }
 }
 
 impl FromLatin for Transliterator {
-    fn from_latin(&self, input: &str) -> String {
+    fn translit_reverse(&self, input: &str) -> String {
         self.translit(input, false)
     }
 }
