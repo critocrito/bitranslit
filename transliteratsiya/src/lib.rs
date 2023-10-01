@@ -2,7 +2,7 @@ pub mod languages;
 pub mod transliterator;
 
 pub use crate::languages::Language;
-pub use crate::languages::{armenian::Armenian, bulgarian::Bulgarian};
+pub use crate::languages::{armenian::Armenian, bulgarian::Bulgarian, russian::Russian};
 
 pub type CharsMapping = Vec<(&'static str, &'static str)>;
 
@@ -14,6 +14,7 @@ mod tests {
     const LATIN: &'static str = "Lorem ipsum dolor sit amet";
     const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
     const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
+    const RUSSIAN: &'static str = "Лорем ипсум долор сит амет";
 
     #[test]
     fn bulgarian_to_latin() {
@@ -49,5 +50,23 @@ mod tests {
         let output = t.from_latin(&LATIN);
 
         assert_eq!(output, ARMENIAN.to_string());
+    }
+
+    #[test]
+    fn russian_to_latin() {
+        let t = Russian::new();
+
+        let output = t.to_latin(&RUSSIAN);
+
+        assert_eq!(output, LATIN.to_string());
+    }
+
+    #[test]
+    fn latin_to_russian() {
+        let t = Russian::new();
+
+        let output = t.from_latin(&LATIN);
+
+        assert_eq!(output, RUSSIAN.to_string());
     }
 }
