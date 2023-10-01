@@ -3,6 +3,18 @@ name = "transliteratsiya"
 version = "0.1.0"
 edition = "2021"
 description = "Bi-directional transliterator for Rust. Transliterates strings according to the rules specified in the language packs."
+keywords = [
+  "transliteration",
+  "transliterator",
+  "transliteration-armenian",
+  "transliteration-bulgarian",
+  "transliteration-russian",
+  "transliteration-ukranian"
+]
+license = "LGPL-2.1-or-later"
+repository = "https://github.com/critocrito/transliteratsiya"
+homepage = "https://github.com/critocrito/transliteratsiya"
+readme = "README.md"
 
 [dependencies]
 transliteratsiya_derive = { path = "../transliteratsiya_derive" }
