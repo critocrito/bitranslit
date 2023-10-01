@@ -25,7 +25,7 @@ pub struct Transliterator {
 }
 
 impl Transliterator {
-    pub fn translit(&self, input: &str, reverse: bool) -> String {
+    fn translit(&self, input: &str, reverse: bool) -> String {
         let mut input = input.to_owned();
 
         if reverse {
