@@ -127,39 +127,22 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 };
 
             quote! {
-                use crate::{transliterator::{FromLatin, ToLatin, Transliterator}, Language};
+                use crate::transliterator::{Transliterator};
 
                 #[derive(Debug)]
-                pub struct #language {
-                    translit: Transliterator
-                }
+                pub struct #language;
 
                 impl #language {
-                    pub fn new() -> Self {
-                        Self {
-                            translit: Transliterator::new(
-                                #mapping,
-                                #pre_processor_mapping,
-                                #reverse_specific_mapping,
-                                #reverse_specific_pre_processor_mapping,
-                            )
-                        }
+                    pub fn new() -> Transliterator {
+                        Transliterator::new(
+                            stringify!(#language),
+                            #mapping,
+                            #pre_processor_mapping,
+                            #reverse_specific_mapping,
+                            #reverse_specific_pre_processor_mapping,
+                        )
                     }
                 }
-
-                impl FromLatin for #language {
-                    fn from_latin(&self, input: &str) -> String {
-                        self.translit.translit(&input, false)
-                    }
-                }
-
-                impl ToLatin for #language {
-                    fn to_latin(&self, input: &str) -> String {
-                        self.translit.translit(&input, true)
-                    }
-                }
-
-                impl Language for #language {}
             }
         }
     };

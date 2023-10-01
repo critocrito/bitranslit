@@ -16,14 +16,17 @@ pub trait FromLatin {
 
 #[derive(Debug)]
 pub struct Transliterator {
+    pub language: String,
     mapping: CharsMapping,
     pre_processor_mapping: Option<CharsMapping>,
     reverse_specific_mapping: Option<CharsMapping>,
     reverse_specific_pre_processor_mapping: Option<CharsMapping>,
 }
 
+// FIXME: Implement Builder to construct Transliterator.
 impl Transliterator {
     pub fn new(
+        language: &str,
         mapping: CharsMapping,
         pre_processor_mapping: Option<CharsMapping>,
         reverse_specific_mapping: Option<CharsMapping>,
@@ -37,6 +40,7 @@ impl Transliterator {
         mapping.sort_by(|a, b| compare_len(b.0, a.0));
 
         Self {
+            language: language.to_string(),
             mapping,
             pre_processor_mapping,
             reverse_specific_mapping,
@@ -88,5 +92,17 @@ impl Transliterator {
         }
 
         input
+    }
+}
+
+impl ToLatin for Transliterator {
+    fn to_latin(&self, input: &str) -> String {
+        self.translit(&input, true)
+    }
+}
+
+impl FromLatin for Transliterator {
+    fn from_latin(&self, input: &str) -> String {
+        self.translit(&input, false)
     }
 }
