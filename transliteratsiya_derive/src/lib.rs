@@ -4,81 +4,96 @@ extern crate syn;
 extern crate quote;
 
 use proc_macro::TokenStream;
+use syn::parse::{Parse, ParseStream};
+use syn::punctuated::Punctuated;
+use syn::{braced, parse_macro_input, token, Field, Ident, Result, Token, Type};
 
-#[proc_macro_derive(LanguagePack, attributes(LanguageRules))]
-pub fn derive_language_pack(input: TokenStream) -> TokenStream {
-    let ast = syn::parse(input).unwrap();
-    impl_language_pack(&ast)
+#[derive(Debug)]
+enum Item {
+    Struct(ExprStruct),
 }
 
-fn impl_language_pack(ast: &syn::DeriveInput) -> TokenStream {
-    let name = &ast.ident;
-    let attribute = ast.attrs.first().unwrap();
-    let language = match &attribute.meta {
-        syn::Meta::List(expr) => &expr.tokens,
-        _ => panic!(r#"#[LanguageRules = ".."] must be a valid language rule set."#),
+#[derive(Debug)]
+struct ExprStruct {
+    ident: Ident,
+    _brace_token: token::Brace,
+    fields: Punctuated<Field, Token![,]>,
+}
+
+impl Parse for Item {
+    fn parse(input: ParseStream) -> Result<Self> {
+        input.parse().map(Item::Struct)
+        // let lookahead = input.lookahead1();
+        // if lookahead.peek(Token![struct]) {
+        //     input.parse().map(Item::Struct)
+        // } else {
+        //     Err(lookahead.error())
+        // }
+    }
+}
+
+impl Parse for ExprStruct {
+    fn parse(input: ParseStream) -> Result<Self> {
+        let content;
+        Ok(ExprStruct {
+            ident: input.parse()?,
+            _brace_token: braced!(content in input),
+            fields: content.parse_terminated(Field::parse_named, Token![,])?,
+        })
+    }
+}
+
+#[proc_macro]
+pub fn language_pack(tokens: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(tokens as Item);
+    let expanded = match input {
+        Item::Struct(expr) => {
+            let language = expr.ident;
+            let mapping_field = expr
+                .fields
+                .iter()
+                .find(|&f| f.ident.as_ref().unwrap().to_string() == "mapping")
+                .unwrap();
+
+            let mapping_type = match &mapping_field.ty {
+                Type::Path(type_path) => &type_path.path.segments.first().unwrap().ident,
+                _ => panic!("Not a valid mapping for language pack {}", language),
+            };
+
+            quote! {
+                use crate::{transliterator::{FromLatin, ToLatin, Transliterator}, Language};
+
+                #[derive(Debug)]
+                pub struct #language {
+                    translit: Transliterator
+                }
+
+                impl #language {
+                    pub fn new() -> Self {
+                        let rules = #mapping_type.iter().cloned().collect();
+
+                        Self {
+                            translit: Transliterator::new(rules)
+                        }
+                    }
+                }
+
+                impl FromLatin for #language {
+                    fn from_latin(&self, input: &str) -> String {
+                        self.translit.translit(&input, true)
+                    }
+                }
+
+                impl ToLatin for #language {
+                    fn to_latin(&self, input: &str) -> String {
+                        self.translit.translit(&input, false)
+                    }
+                }
+
+                impl Language for #language {}
+            }
+        }
     };
 
-    if let syn::Data::Struct(_) = ast.data {
-        let tokens = quote! {
-            impl #name {
-                pub fn new() -> Self {
-                    let rules = #language.iter().cloned().collect();
-                    let translit = Transliterator::new(rules);
-
-                    Self { translit }
-                }
-            }
-        };
-
-        tokens.into()
-    } else {
-        panic!("#[derive(LanguagePack)] is only defined for structs, not for enums!");
-    }
-}
-
-#[proc_macro_derive(FromLatin)]
-pub fn derive_from_latin(input: TokenStream) -> TokenStream {
-    let ast = syn::parse(input).unwrap();
-    impl_from_latin(&ast)
-}
-
-#[proc_macro_derive(ToLatin)]
-pub fn derive_to_latin(input: TokenStream) -> TokenStream {
-    let ast = syn::parse(input).unwrap();
-    impl_to_latin(&ast)
-}
-
-fn impl_from_latin(ast: &syn::DeriveInput) -> TokenStream {
-    let name = &ast.ident;
-    if let syn::Data::Struct(_) = ast.data {
-        let tokens = quote! {
-            impl FromLatin for #name {
-                fn from_latin(&self, input: &str) -> String {
-                    self.translit.translit(&input, true)
-                }
-            }
-        };
-
-        tokens.into()
-    } else {
-        panic!("#[derive(FromLatin)] is only defined for structs, not for enums!");
-    }
-}
-
-fn impl_to_latin(ast: &syn::DeriveInput) -> TokenStream {
-    let name = &ast.ident;
-    if let syn::Data::Struct(_) = ast.data {
-        let tokens = quote! {
-            impl ToLatin for #name {
-                fn to_latin(&self, input: &str) -> String {
-                    self.translit.translit(&input, false)
-                }
-            }
-        };
-
-        tokens.into()
-    } else {
-        panic!("#[derive(ToLatin)] is only defined for structs, not for enums!");
-    }
+    TokenStream::from(expanded)
 }

@@ -1,23 +1,20 @@
 use std::cmp::Ordering;
-use transliteratsiya_derive::{FromLatin, LanguagePack, ToLatin};
 
 use crate::CharsMapping;
 
-static BG: [(&str, &str); 61] = include!("standards/bg.in");
-static RU: [(&str, &str); 65] = include!("standards/ru.in");
-static BY: [(&str, &str); 64] = include!("standards/by.in");
-static UA: [(&str, &str); 66] = include!("standards/ua.in");
-
-/// The contract for transliteration in the Latin alphabet
+/// The contract for transliteration from the source language to the Latin
+/// alphabet.
 pub trait ToLatin {
     fn to_latin(&self, input: &str) -> String;
 }
 
-/// The contract for transliteration from Latin alphabet
+/// The contract for transliteration from the Latin alphabet to the source
+/// language.
 pub trait FromLatin {
     fn from_latin(&self, input: &str) -> String;
 }
 
+#[derive(Debug)]
 pub struct Transliterator {
     rules: CharsMapping,
 }
@@ -49,28 +46,4 @@ impl Transliterator {
 
         input
     }
-}
-
-#[derive(LanguagePack, ToLatin)]
-#[LanguageRules(BG)]
-pub struct Bulgarian {
-    translit: Transliterator,
-}
-
-#[derive(LanguagePack, ToLatin, FromLatin)]
-#[LanguageRules(RU)]
-pub struct Russian {
-    translit: Transliterator,
-}
-
-#[derive(LanguagePack, ToLatin, FromLatin)]
-#[LanguageRules(UA)]
-pub struct Ukranian {
-    translit: Transliterator,
-}
-
-#[derive(LanguagePack, ToLatin, FromLatin)]
-#[LanguageRules(BY)]
-pub struct Belarusian {
-    translit: Transliterator,
 }

@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 transliteratsiya_derive = { path = "../transliteratsiya_derive" }
+lazy_static = "1.4"
 
 [build-dependencies]
 csv = "1.2.2"
