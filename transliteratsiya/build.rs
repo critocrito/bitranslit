@@ -75,24 +75,24 @@ fn write_standard(dir_name: &Path, standard: Standard) {
     let reverse_specific_pre_processor_mapping_in =
         dir_name.join("reverse_specific_pre_processor_mapping.in");
 
-    let mut module = File::create(&mapping_in).unwrap();
+    let mut module = File::create(mapping_in).unwrap();
     write_standard_in_file(&standard.mapping, &mut module).unwrap();
 
     if let Some(pre_processor_mapping) = &standard.pre_processor_mapping {
-        let mut module = File::create(&pre_processor_mapping_in).unwrap();
-        write_standard_in_file(&pre_processor_mapping, &mut module).unwrap();
+        let mut module = File::create(pre_processor_mapping_in).unwrap();
+        write_standard_in_file(pre_processor_mapping, &mut module).unwrap();
     }
 
     if let Some(reverse_specific_mapping) = &standard.reverse_specific_mapping {
-        let mut module = File::create(&reverse_specific_mapping_in).unwrap();
-        write_standard_in_file(&reverse_specific_mapping, &mut module).unwrap();
+        let mut module = File::create(reverse_specific_mapping_in).unwrap();
+        write_standard_in_file(reverse_specific_mapping, &mut module).unwrap();
     }
 
     if let Some(reverse_specific_pre_processor_mapping) =
         &standard.reverse_specific_pre_processor_mapping
     {
-        let mut module = File::create(&reverse_specific_pre_processor_mapping_in).unwrap();
-        write_standard_in_file(&reverse_specific_pre_processor_mapping, &mut module).unwrap();
+        let mut module = File::create(reverse_specific_pre_processor_mapping_in).unwrap();
+        write_standard_in_file(reverse_specific_pre_processor_mapping, &mut module).unwrap();
     }
 }
 
@@ -117,7 +117,7 @@ fn read_data(file: &Path) -> Vec<Mapping> {
 }
 
 fn write_standard_in_file(in_file: &Path, out_file: &mut File) -> Result<(), std::io::Error> {
-    let mappings = read_data(&in_file);
+    let mappings = read_data(in_file);
 
     writeln!(out_file, "[")?;
 
@@ -139,12 +139,12 @@ fn main() {
     let languages = list_languages();
 
     for language in languages {
-        let standard = read_standard(&data_dir, &language);
+        let standard = read_standard(data_dir, &language);
 
         let dir_name = format!("src/standards/{}", language);
         let dir_name = Path::new(&dir_name);
         create_dir_all(dir_name).unwrap();
 
-        write_standard(&dir_name, standard);
+        write_standard(dir_name, standard);
     }
 }

@@ -52,22 +52,23 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
             let mapping_field = expr
                 .fields
                 .iter()
-                .find(|&f| f.ident.as_ref().unwrap().to_string() == "mapping")
+                .find(|&f| *f.ident.as_ref().unwrap() == "mapping")
                 .unwrap();
 
             let pre_processor_mapping_field = expr
                 .fields
                 .iter()
-                .find(|&f| f.ident.as_ref().unwrap().to_string() == "pre_processor_mapping");
+                .find(|&f| *f.ident.as_ref().unwrap() == "pre_processor_mapping");
 
             let reverse_specific_mapping_field = expr
                 .fields
                 .iter()
-                .find(|&f| f.ident.as_ref().unwrap().to_string() == "reverse_specific_mapping");
+                .find(|&f| *f.ident.as_ref().unwrap() == "reverse_specific_mapping");
 
-            let reverse_specific_pre_processor_mapping_field = expr.fields.iter().find(|&f| {
-                f.ident.as_ref().unwrap().to_string() == "reverse_specific_pre_processor_mapping"
-            });
+            let reverse_specific_pre_processor_mapping_field = expr
+                .fields
+                .iter()
+                .find(|&f| *f.ident.as_ref().unwrap() == "reverse_specific_pre_processor_mapping");
 
             let mapping = match &mapping_field.ty {
                 Type::Path(type_path) => {
