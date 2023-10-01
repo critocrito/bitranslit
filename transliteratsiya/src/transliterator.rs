@@ -16,25 +16,41 @@ pub trait FromLatin {
 
 #[derive(Debug)]
 pub struct Transliterator {
-    rules: CharsMapping,
+    mapping: CharsMapping,
+    pre_processor_mapping: Option<CharsMapping>,
 }
 
 impl Transliterator {
-    pub fn new(standard: CharsMapping) -> Self {
-        let mut rules = standard;
+    pub fn new(mapping: CharsMapping, pre_processor_mapping: Option<CharsMapping>) -> Self {
+        let mut mapping = mapping;
         fn compare_len(left: &str, right: &str) -> Ordering {
             left.len().cmp(&right.len())
         }
         // sort by Latin string
-        rules.sort_by(|a, b| compare_len(b.1, a.1));
+        mapping.sort_by(|a, b| compare_len(b.1, a.1));
 
-        Self { rules }
+        Self {
+            mapping,
+            pre_processor_mapping,
+        }
     }
 
     pub fn translit(&self, input: &str, reverse: bool) -> String {
         let mut input = input.to_owned();
 
-        for elem in self.rules.iter() {
+        if let Some(mapping) = &self.pre_processor_mapping {
+            for elem in mapping.iter() {
+                let (source_char, translit_char) = if reverse {
+                    (elem.1, elem.0)
+                } else {
+                    (elem.0, elem.1)
+                };
+
+                input = input.replace(source_char, translit_char);
+            }
+        }
+
+        for elem in self.mapping.iter() {
             let (source_char, translit_char) = if reverse {
                 (elem.1, elem.0)
             } else {

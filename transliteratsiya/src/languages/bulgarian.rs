@@ -2,7 +2,12 @@ use lazy_static::lazy_static;
 use transliteratsiya_derive::language_pack;
 
 lazy_static! {
-    static ref MAPPING: [(&'static str, &'static str); 61] = include!("../standards/bg.in");
+    static ref MAPPING: [(&'static str, &'static str); 42] = include!("../standards/bg/mapping.in");
+    static ref PRE_PROCESSOR_MAPPING: [(&'static str, &'static str); 16] =
+        include!("../standards/bg/pre_processor_mapping.in");
 }
 
-language_pack!(Bulgarian { mapping: MAPPING });
+language_pack!(Bulgarian {
+    mapping: MAPPING,
+    pre_processor_mapping: PRE_PROCESSOR_MAPPING
+});

@@ -55,9 +55,33 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 .find(|&f| f.ident.as_ref().unwrap().to_string() == "mapping")
                 .unwrap();
 
-            let mapping_type = match &mapping_field.ty {
-                Type::Path(type_path) => &type_path.path.segments.first().unwrap().ident,
-                _ => panic!("Not a valid mapping for language pack {}", language),
+            let pre_processor_mapping_field = expr
+                .fields
+                .iter()
+                .find(|&f| f.ident.as_ref().unwrap().to_string() == "pre_processor_mapping");
+
+            let mapping = match &mapping_field.ty {
+                Type::Path(type_path) => {
+                    let mapping = &type_path.path.segments.first().unwrap().ident;
+                    quote! { #mapping.iter().cloned().collect() }
+                }
+                _ => panic!("Not a valid mapping for language {}", language),
+            };
+
+            let pre_processor_mapping = if let Some(field) = pre_processor_mapping_field {
+                match &field.ty {
+                    Type::Path(type_path) => {
+                        let mapping = &type_path.path.segments.first().unwrap().ident;
+
+                        quote! { Some(#mapping.iter().cloned().collect()) }
+                    }
+                    _ => panic!(
+                        "Not a valid pre_processor_mapping for language {}",
+                        language
+                    ),
+                }
+            } else {
+                quote! { None }
             };
 
             quote! {
@@ -70,10 +94,8 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
 
                 impl #language {
                     pub fn new() -> Self {
-                        let rules = #mapping_type.iter().cloned().collect();
-
                         Self {
-                            translit: Transliterator::new(rules)
+                            translit: Transliterator::new(#mapping, #pre_processor_mapping)
                         }
                     }
                 }

@@ -8,9 +8,8 @@ type Mapping = (String, String);
 
 #[derive(Debug)]
 struct Standard {
-    language: String,
-    standard: String,
-    path: PathBuf,
+    mapping: PathBuf,
+    pre_processor_mapping: Option<PathBuf>,
 }
 
 fn list_languages() -> Vec<String> {
@@ -29,37 +28,41 @@ fn list_languages() -> Vec<String> {
     languages
 }
 
-fn list_standards() -> Vec<Standard> {
-    let mut standards = vec![];
-    let languages = list_languages();
+fn read_standard(dir_name: &Path, language: &str) -> Standard {
+    let mapping_file = dir_name.join(language).join("mapping.csv");
+    let pre_processor_mapping_file = dir_name.join(language).join("pre_processor_mapping.csv");
 
-    for language in languages {
-        let data_dir = format!("data/{}", language);
+    let mapping = match mapping_file.try_exists() {
+        Ok(true) => mapping_file,
+        Ok(false) | Err(_) => panic!("mapping.csv for {} not found", language),
+    };
 
-        let paths = std::fs::read_dir(data_dir).expect("Should locate data/language directory");
+    let pre_processor_mapping = match pre_processor_mapping_file.try_exists() {
+        Ok(true) => Some(pre_processor_mapping_file),
+        Ok(false) | Err(_) => None,
+    };
 
-        for entry in paths {
-            let entry = entry.unwrap();
-            let path = entry.path();
-            let extension = path.extension().unwrap();
-
-            if path.is_file() && extension == "csv" {
-                let standard = path.file_stem().unwrap().to_string_lossy().to_string();
-
-                standards.push(Standard {
-                    language: language.clone(),
-                    standard,
-                    path,
-                });
-            }
-        }
+    Standard {
+        mapping,
+        pre_processor_mapping,
     }
-
-    standards
 }
 
-fn read_standard(file: &Path) -> Vec<Mapping> {
-    let mut mappings = vec![];
+fn write_standard(dir_name: &Path, standard: Standard) {
+    let mapping_in = dir_name.join("mapping.in");
+    let pre_processor_maping_in = dir_name.join("pre_processor_mapping.in");
+
+    let mut module = File::create(&mapping_in).unwrap();
+    write_standard_in_file(&standard.mapping, &mut module).unwrap();
+
+    if let Some(pre_processor_mapping) = &standard.pre_processor_mapping {
+        let mut module = File::create(&pre_processor_maping_in).unwrap();
+        write_standard_in_file(&pre_processor_mapping, &mut module).unwrap();
+    }
+}
+
+fn read_data(file: &Path) -> Vec<Mapping> {
+    let mut data = vec![];
 
     let file = File::open(file).unwrap();
     let mut rdr = csv::ReaderBuilder::new()
@@ -69,25 +72,25 @@ fn read_standard(file: &Path) -> Vec<Mapping> {
     for record in rdr.records() {
         let record = record.unwrap();
 
-        mappings.push((
+        data.push((
             record.get(0).unwrap().to_string(),
             record.get(1).unwrap().to_string(),
         ));
     }
 
-    mappings
+    data
 }
 
-fn write_standard_in_file(standard: &Standard, file: &mut File) -> Result<(), std::io::Error> {
-    let mappings = read_standard(&standard.path);
+fn write_standard_in_file(in_file: &Path, out_file: &mut File) -> Result<(), std::io::Error> {
+    let mappings = read_data(&in_file);
 
-    writeln!(file, "[")?;
+    writeln!(out_file, "[")?;
 
     for (a, b) in mappings {
-        writeln!(file, r#"    ("{}", "{}"),"#, a.as_str(), b.as_str())?;
+        writeln!(out_file, r#"    ("{}", "{}"),"#, a.as_str(), b.as_str())?;
     }
 
-    writeln!(file, "]")?;
+    writeln!(out_file, "]")?;
 
     Ok(())
 }
@@ -96,29 +99,17 @@ fn main() {
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=Cargo.lock");
 
+    let data_dir = Path::new("data");
+
     let languages = list_languages();
-    let standards = list_standards();
-
-    for standard in &standards {
-        println!(
-            "cargo:rerun-if-changed={}",
-            standard.path.as_os_str().to_str().unwrap()
-        );
-    }
-
-    create_dir_all("src/standards").unwrap();
 
     for language in languages {
-        let language_standards: Vec<&Standard> = standards
-            .iter()
-            .filter(|s| s.language == language)
-            .collect();
+        let standard = read_standard(&data_dir, &language);
 
-        let module_name = format!("src/standards/{}.in", language);
-        let mut module = File::create(&module_name).unwrap();
+        let dir_name = format!("src/standards/{}", language);
+        let dir_name = Path::new(&dir_name);
+        create_dir_all(dir_name).unwrap();
 
-        for standard in language_standards {
-            write_standard_in_file(standard, &mut module).unwrap();
-        }
+        write_standard(&dir_name, standard);
     }
 }
