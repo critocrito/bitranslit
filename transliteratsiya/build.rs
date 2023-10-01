@@ -102,6 +102,7 @@ fn read_data(file: &Path) -> Vec<Mapping> {
     let file = File::open(file).unwrap();
     let mut rdr = csv::ReaderBuilder::new()
         .has_headers(false)
+        .comment(Some(b'#'))
         .from_reader(file);
 
     for record in rdr.records() {
