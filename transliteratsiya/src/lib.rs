@@ -23,8 +23,8 @@ pub fn transliterate(input: &str, language: SupportedLanguage, reverse: bool) ->
     };
 
     match reverse {
-        true => language_pack.translit(input),
-        false => language_pack.translit_reverse(input),
+        false => language_pack.translit(input),
+        true => language_pack.translit_reverse(input),
     }
 }
 

@@ -74,12 +74,12 @@ impl Transliterator {
 
 impl ToLatin for Transliterator {
     fn translit(&self, input: &str) -> String {
-        self.translit(input, true)
+        self.translit(input, false)
     }
 }
 
 impl FromLatin for Transliterator {
     fn translit_reverse(&self, input: &str) -> String {
-        self.translit(input, false)
+        self.translit(input, true)
     }
 }
