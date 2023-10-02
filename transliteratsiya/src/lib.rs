@@ -70,9 +70,9 @@ mod tests {
     use super::*;
 
     const LATIN: &'static str = "Lorem ipsum dolor sit amet";
+    const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
     const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
     const GREEK: &'static str = "Λορεμ ιψυμ δολορ σιτ αμετ";
-    const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
     const RUSSIAN: &'static str = "Лорем ипсум долор сит амет";
     const SERBIAN: &'static str = "Лорем ипсум долор сит амет";
     const PANGRAM_SERBIAN: &'static str =
@@ -80,6 +80,20 @@ mod tests {
     const PANGRAM_LATIN: &'static str =
         "Fijuče vetar u šiblju, ledi pasaže i kuće iza njih i gunđa u odžacima";
     const UKRANIAN: &'static str = "Лорем іпсум долор сіт амет";
+
+    #[test]
+    fn armenian_to_latin() {
+        let output = transliterate(&ARMENIAN, Language::Armenian, false);
+
+        assert_eq!(output, LATIN.to_string());
+    }
+
+    #[test]
+    fn latin_to_armenian() {
+        let output = transliterate(&LATIN, Language::Armenian, true);
+
+        assert_eq!(output, ARMENIAN.to_string());
+    }
 
     #[test]
     fn bulgarian_to_latin() {
@@ -107,20 +121,6 @@ mod tests {
         let output = transliterate(&LATIN, Language::Greek, true);
 
         assert_eq!(output, GREEK.to_string());
-    }
-
-    #[test]
-    fn armenian_to_latin() {
-        let output = transliterate(&ARMENIAN, Language::Armenian, false);
-
-        assert_eq!(output, LATIN.to_string());
-    }
-
-    #[test]
-    fn latin_to_armenian() {
-        let output = transliterate(&LATIN, Language::Armenian, true);
-
-        assert_eq!(output, ARMENIAN.to_string());
     }
 
     #[test]

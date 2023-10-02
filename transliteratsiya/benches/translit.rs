@@ -3,9 +3,9 @@ use criterion::{black_box, criterion_group, criterion_main, Criterion};
 pub use transliteratsiya::{transliterate, Language};
 
 const LATIN: &'static str = "Lorem ipsum dolor sit amet";
+const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
 const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
 const GREEK: &'static str = "Λορεμ ιψυμ δολορ σιτ αμετ";
-const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
 const RUSSIAN: &'static str = "Лорем ипсум долор сит амет";
 const UKRANIAN: &'static str = "Лорем іпсум долор сіт амет";
 const SERBIAN: &'static str = "Лорем ипсум долор сит амет";
@@ -13,6 +13,14 @@ const PANGRAM_SERBIAN: &'static str =
     "Фијуче ветар у шибљу, леди пасаже и куће иза њих и гунђа у оџацима";
 const PANGRAM_LATIN: &'static str =
     "Fijuče vetar u šiblju, ledi pasaže i kuće iza njih i gunđa u odžacima";
+
+fn from_hy(_n: u64) {
+    let _ = transliterate(&ARMENIAN, Language::Armenian, false);
+}
+
+fn to_hy(_n: u64) {
+    let _ = transliterate(&LATIN, Language::Armenian, true);
+}
 
 fn from_bg(_n: u64) {
     let _ = transliterate(&BULGARIAN, Language::Bulgarian, false);
@@ -28,14 +36,6 @@ fn from_el(_n: u64) {
 
 fn to_el(_n: u64) {
     let _ = transliterate(&LATIN, Language::Greek, true);
-}
-
-fn from_hy(_n: u64) {
-    let _ = transliterate(&ARMENIAN, Language::Armenian, false);
-}
-
-fn to_hy(_n: u64) {
-    let _ = transliterate(&LATIN, Language::Armenian, true);
 }
 
 fn from_ru(_n: u64) {
@@ -71,14 +71,14 @@ fn to_ua(_n: u64) {
 }
 
 fn criterion_benchmark(c: &mut Criterion) {
+    c.bench_function("from_hy", |b| b.iter(|| from_hy(black_box(20))));
+    c.bench_function("to_hy", |b| b.iter(|| to_hy(black_box(20))));
+
     c.bench_function("from_bg", |b| b.iter(|| from_bg(black_box(20))));
     c.bench_function("to_bg", |b| b.iter(|| to_bg(black_box(20))));
 
     c.bench_function("from_el", |b| b.iter(|| from_el(black_box(20))));
     c.bench_function("to_el", |b| b.iter(|| to_el(black_box(20))));
-
-    c.bench_function("from_hy", |b| b.iter(|| from_hy(black_box(20))));
-    c.bench_function("to_hy", |b| b.iter(|| to_hy(black_box(20))));
 
     c.bench_function("from_ru", |b| b.iter(|| from_ru(black_box(20))));
     c.bench_function("to_ru", |b| b.iter(|| to_ru(black_box(20))));
