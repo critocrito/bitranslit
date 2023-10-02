@@ -49,6 +49,7 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
     let expanded = match input {
         Item::Struct(expr) => {
             let language = expr.ident;
+            let language_label = language.to_string().to_lowercase();
             let mapping_field = expr
                 .fields
                 .iter()
@@ -128,15 +129,30 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 };
 
             quote! {
+                use std::{convert::From, default:: Default};
                 use crate::transliterator::{Transliterator, TransliteratorBuilder};
 
-                #[derive(Debug)]
-                pub struct #language;
+                #[derive(Clone, Debug)]
+                pub struct #language {
+                    language: String,
+                }
+
+                impl Default for #language {
+                    fn default() -> Self {
+                        Self { language: #language_label.to_string() }
+                    }
+                }
 
                 impl #language {
-                    pub fn new() -> Transliterator {
+                    pub fn new() -> Self {
+                        Default::default()
+                    }
+                }
+
+                impl From<#language> for Transliterator {
+                    fn from(language: #language) -> Self {
                         TransliteratorBuilder::default()
-                            .language(stringify!(#language))
+                            .language(language.language)
                             .mapping(#mapping)
                             .pre_processor_mapping(#pre_processor_mapping)
                             .reverse_specific_mapping(#reverse_specific_mapping)
@@ -145,6 +161,8 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                             .unwrap()
                     }
                 }
+
+
             }
         }
     };

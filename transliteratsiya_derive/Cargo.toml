@@ -14,7 +14,7 @@ keywords = [
 license = "LGPL-2.1-or-later"
 repository = "https://github.com/critocrito/transliteratsiya"
 homepage = "https://github.com/critocrito/transliteratsiya"
-readme = "README.md"
+readme = "../README.md"
 
 
 [lib]

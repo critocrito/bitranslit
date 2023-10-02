@@ -1,4 +1,6 @@
-pub mod armenian;
-pub mod bulgarian;
-pub mod russian;
-pub mod ukranian;
+mod armenian;
+mod bulgarian;
+mod russian;
+mod ukranian;
+
+pub use {armenian::Armenian, bulgarian::Bulgarian, russian::Russian, ukranian::Ukranian};

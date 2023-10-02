@@ -1,25 +1,35 @@
 pub mod languages;
 pub mod transliterator;
 
-pub use crate::languages::{
-    armenian::Armenian, bulgarian::Bulgarian, russian::Russian, ukranian::Ukranian,
+use crate::{
+    languages::{Armenian, Bulgarian, Russian, Ukranian},
+    transliterator::{FromLatin, ToLatin, Transliterator},
 };
 
-use crate::transliterator::{FromLatin, ToLatin, Transliterator};
-
-pub enum SupportedLanguage {
+/// Languages that support transliteration.
+pub enum Language {
     Armenian,
     Bulgarian,
     Russian,
     Ukranian,
 }
 
-pub fn transliterate(input: &str, language: SupportedLanguage, reverse: bool) -> String {
-    let language_pack: Transliterator = match language {
-        SupportedLanguage::Armenian => Armenian::new(),
-        SupportedLanguage::Bulgarian => Bulgarian::new(),
-        SupportedLanguage::Russian => Russian::new(),
-        SupportedLanguage::Ukranian => Ukranian::new(),
+/// This utility is the prefered way to transliterate a string for any of the
+/// supported languages.
+///
+/// ```rust
+/// use transliteratsiya::{Language, transliterate};
+///
+/// # fn main() {
+/// let _ = transliterate("Никой не е по-голям от хляба", Language::Bulgarian, false);
+/// # }
+/// ```
+pub fn transliterate(input: &str, language: Language, reverse: bool) -> String {
+    let language_pack = match language {
+        Language::Armenian => Transliterator::from(Armenian::new()),
+        Language::Bulgarian => Transliterator::from(Bulgarian::new()),
+        Language::Russian => Transliterator::from(Russian::new()),
+        Language::Ukranian => Transliterator::from(Ukranian::new()),
     };
 
     match reverse {
@@ -31,7 +41,6 @@ pub fn transliterate(input: &str, language: SupportedLanguage, reverse: bool) ->
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::transliterator::{FromLatin, ToLatin};
 
     const LATIN: &'static str = "Lorem ipsum dolor sit amet";
     const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
@@ -41,72 +50,56 @@ mod tests {
 
     #[test]
     fn bulgarian_to_latin() {
-        let t = Bulgarian::new();
-
-        let output = t.translit(&BULGARIAN);
+        let output = transliterate(&BULGARIAN, Language::Bulgarian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_bulgarian() {
-        let t = Bulgarian::new();
-
-        let output = t.translit_reverse(&LATIN);
+        let output = transliterate(&LATIN, Language::Bulgarian, true);
 
         assert_eq!(output, BULGARIAN.to_string());
     }
 
     #[test]
     fn armenian_to_latin() {
-        let t = Armenian::new();
-
-        let output = t.translit(&ARMENIAN);
+        let output = transliterate(&ARMENIAN, Language::Armenian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_armenian() {
-        let t = Armenian::new();
-
-        let output = t.translit_reverse(&LATIN);
+        let output = transliterate(&LATIN, Language::Armenian, true);
 
         assert_eq!(output, ARMENIAN.to_string());
     }
 
     #[test]
     fn russian_to_latin() {
-        let t = Russian::new();
-
-        let output = t.translit(&RUSSIAN);
+        let output = transliterate(&RUSSIAN, Language::Russian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_russian() {
-        let t = Russian::new();
-
-        let output = t.translit_reverse(&LATIN);
+        let output = transliterate(&LATIN, Language::Russian, true);
 
         assert_eq!(output, RUSSIAN.to_string());
     }
 
     #[test]
     fn ukranian_to_latin() {
-        let t = Ukranian::new();
-
-        let output = t.translit(&UKRANIAN);
+        let output = transliterate(&UKRANIAN, Language::Ukranian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_ukranian() {
-        let t = Ukranian::new();
-
-        let output = t.translit_reverse(&LATIN);
+        let output = transliterate(&LATIN, Language::Ukranian, true);
 
         assert_eq!(output, UKRANIAN.to_string());
     }
