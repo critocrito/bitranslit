@@ -23,7 +23,7 @@ pub mod languages;
 pub mod transliterator;
 
 use crate::{
-    languages::{Armenian, Bulgarian, Russian, Serbian, Ukranian},
+    languages::{Armenian, Bulgarian, Greek, Russian, Serbian, Ukranian},
     transliterator::{FromLatin, ToLatin, Transliterator},
 };
 
@@ -33,6 +33,7 @@ pub use transliteratsiya_derive::language_pack;
 pub enum Language {
     Armenian,
     Bulgarian,
+    Greek,
     Russian,
     Serbian,
     Ukranian,
@@ -52,6 +53,7 @@ pub fn transliterate(input: &str, language: Language, reverse: bool) -> String {
     let language_pack = match language {
         Language::Armenian => Transliterator::from(Armenian::new()),
         Language::Bulgarian => Transliterator::from(Bulgarian::new()),
+        Language::Greek => Transliterator::from(Greek::new()),
         Language::Russian => Transliterator::from(Russian::new()),
         Language::Serbian => Transliterator::from(Serbian::new()),
         Language::Ukranian => Transliterator::from(Ukranian::new()),
@@ -69,6 +71,7 @@ mod tests {
 
     const LATIN: &'static str = "Lorem ipsum dolor sit amet";
     const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
+    const GREEK: &'static str = "Λορεμ ιψυμ δολορ σιτ αμετ";
     const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
     const RUSSIAN: &'static str = "Лорем ипсум долор сит амет";
     const SERBIAN: &'static str = "Лорем ипсум долор сит амет";
@@ -90,6 +93,20 @@ mod tests {
         let output = transliterate(&LATIN, Language::Bulgarian, true);
 
         assert_eq!(output, BULGARIAN.to_string());
+    }
+
+    #[test]
+    fn greek_to_latin() {
+        let output = transliterate(&GREEK, Language::Greek, false);
+
+        assert_eq!(output, LATIN.to_string());
+    }
+
+    #[test]
+    fn latin_to_greek() {
+        let output = transliterate(&LATIN, Language::Greek, true);
+
+        assert_eq!(output, GREEK.to_string());
     }
 
     #[test]

@@ -1,5 +1,6 @@
 mod armenian;
 mod bulgarian;
+mod greek;
 mod russian;
 mod serbian;
 mod ukranian;
@@ -17,6 +18,15 @@ pub use armenian::Armenian;
 ///
 /// Based on the work of Petar Chakarov.
 pub use bulgarian::Bulgarian;
+
+/// See
+/// [http://en.wikipedia.org/wiki/Greek_alphabet](http://en.wikipedia.org/wiki/Greek_alphabet)
+/// and
+/// [https://en.wikipedia.org/wiki/Romanization_of_Greek#Modern_Greek](https://en.wikipedia.org/wiki/Romanization_of_Greek#Modern_Greek)
+/// for details.
+///
+/// Based on the work of Artur Barseghyan.
+pub use greek::Greek;
 
 /// See
 /// [http://en.wikipedia.org/wiki/Russian_alphabet](http://en.wikipedia.org/wiki/Russian_alphabet)

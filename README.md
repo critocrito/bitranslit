@@ -8,6 +8,7 @@ It comes with language packs for the following languages:
 
 - Armenian
 - Bulgarian (beta)
+- Greek
 - Russian
 - Serbian (alpha)
 - Ukrainian (beta)
