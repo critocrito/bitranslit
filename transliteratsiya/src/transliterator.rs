@@ -16,23 +16,23 @@ pub trait FromLatin {
     fn translit_reverse(&self, input: &str) -> String;
 }
 
-/// A [`Transliterator`] is at the core of transliteration. The easiest way is
-/// to construct it from a language pack. Using the
-/// [`transliterate`](crate::transliterate) utility function directly
-/// simplifies the usage of it.
+/// A [`Transliterator`] is at the core of transliteration. It is constructed
+/// from one of the available language packs.
 ///
 /// ```rust
 /// use transliteratsiya::{
 ///     languages::Bulgarian,
-///     transliterator::{Transliterator, ToLatin}
+///     transliterator::{Transliterator, ToLatin, FromLatin}
 /// };
 ///
 /// # fn main() {
 /// let t = Transliterator::from(Bulgarian::new());
 ///
 /// let output = t.translit("Никой не е по-голям от хляба");
+/// let reverse_output = t.translit_reverse("Nikoy ne e po-golyam ot hlyaba");
 ///
-/// assert_eq!(output, "Nikoy ne e po-golyam ot hlyaba".to_string())
+/// assert_eq!(output, "Nikoy ne e po-golyam ot hlyaba".to_string());
+/// assert_eq!(reverse_output, "Никой не е по-голям от хляба".to_string())
 /// # }
 /// ```
 ///
@@ -79,11 +79,17 @@ pub trait FromLatin {
 /// ```
 #[derive(Debug, Builder, Clone)]
 pub struct Transliterator {
+    /// The full name of the language that this [`Transliterator`] transliterates.
     #[builder(setter(into))]
     pub language: String,
+    /// Single character mappings that work both directions.
     mapping: CharsMapping,
+    /// Mappings of single characters to multiple characters that work both directions.
     pre_processor_mapping: Option<CharsMapping>,
+    /// Single characters that are only applied in reverse transliterations
     reverse_specific_mapping: Option<CharsMapping>,
+    /// Mappings of multiple characters to singe characters that are only
+    /// applied in reverse transliteration.
     reverse_specific_pre_processor_mapping: Option<CharsMapping>,
 }
 

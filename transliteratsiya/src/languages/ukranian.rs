@@ -1,6 +1,3 @@
-/// See `http://en.wikipedia.org/wiki/Ukrainian_alphabet` for details.
-///
-/// Based on work by Timofey Pchelintsev.
 use lazy_static::lazy_static;
 use transliteratsiya_derive::language_pack;
 

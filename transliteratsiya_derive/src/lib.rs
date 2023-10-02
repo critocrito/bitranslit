@@ -43,6 +43,26 @@ impl Parse for ExprStruct {
     }
 }
 
+/// Simplify the construction of a language pack. The macro requires at least
+/// one mapping and has additionally three optional mappings. Each mapping is an
+/// array of tuples. The different mapping types are:
+///
+/// - `mapping` (required): Single character mappings that work both directions.
+/// - `pre_processor_mapping` (optional): Mappings of single characters to multiple characters that work both directions.
+/// - `reverse_specific_mapping` (optional): Single characters that are only applied in reverse transliterations.
+/// - `reverse_specific_pre_processor_mapping` (optional): Mappings of multiple characters to singe characters that are only applied in reverse transliteration.
+///
+/// ```text
+/// language_pack!(LanguageName {
+///   mapping: ...,
+///   pre_processor_mapping: ...,
+///   reverse_specific_mapping: ...,
+///   reverse_specific_pre_processor_mapping: ...,
+/// });
+///
+/// ```
+///
+/// See the languages modules for real examples.
 #[proc_macro]
 pub fn language_pack(tokens: TokenStream) -> TokenStream {
     let input = parse_macro_input!(tokens as Item);

@@ -1,3 +1,24 @@
+//! This crate implements bi-directional transliteration for specific languages.
+//! Transliteration means that, e.g. a string in Russian can be converted to the
+//! latin alphabet, and also converted back to the Russian cyrillic.
+//!
+//! The easiest way to use this crate is to use the [`transliterate`] utility function.
+//!
+//! ```rust
+//! use transliteratsiya::{transliterate, Language};
+//!
+//! # fn main() {
+//! const LATIN: &'static str = "Lorem ipsum dolor sit amet";
+//! const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
+//!
+//! let output = transliterate(&BULGARIAN, Language::Bulgarian, false);
+//! assert_eq!(output, LATIN.to_string());
+//!
+//! let output = transliterate(&LATIN, Language::Bulgarian, true);
+//! assert_eq!(output, BULGARIAN.to_string());
+//! # }
+//! ```
+
 pub mod languages;
 pub mod transliterator;
 
@@ -5,6 +26,8 @@ use crate::{
     languages::{Armenian, Bulgarian, Russian, Ukranian},
     transliterator::{FromLatin, ToLatin, Transliterator},
 };
+
+pub use transliteratsiya_derive::language_pack;
 
 /// Languages that support transliteration.
 pub enum Language {
