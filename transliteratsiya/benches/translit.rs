@@ -7,6 +7,11 @@ const BULGARIAN: &'static str = "Лорем ипсум долор сит аме�
 const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
 const RUSSIAN: &'static str = "Лорем ипсум долор сит амет";
 const UKRANIAN: &'static str = "Лорем іпсум долор сіт амет";
+const SERBIAN: &'static str = "Лорем ипсум долор сит амет";
+const PANGRAM_SERBIAN: &'static str =
+    "Фијуче ветар у шибљу, леди пасаже и куће иза њих и гунђа у оџацима";
+const PANGRAM_LATIN: &'static str =
+    "Fijuče vetar u šiblju, ledi pasaže i kuće iza njih i gunđa u odžacima";
 
 fn from_bg(_n: u64) {
     let _ = transliterate(&BULGARIAN, Language::Bulgarian, false);
@@ -32,6 +37,22 @@ fn to_ru(_n: u64) {
     let _ = transliterate(&LATIN, Language::Russian, true);
 }
 
+fn from_sr(_n: u64) {
+    let _ = transliterate(&SERBIAN, Language::Serbian, false);
+}
+
+fn to_sr(_n: u64) {
+    let _ = transliterate(&LATIN, Language::Serbian, true);
+}
+
+fn from_sr_pangram(_n: u64) {
+    let _ = transliterate(&PANGRAM_SERBIAN, Language::Serbian, false);
+}
+
+fn to_sr_pangram(_n: u64) {
+    let _ = transliterate(&PANGRAM_LATIN, Language::Serbian, true);
+}
+
 fn from_ua(_n: u64) {
     let _ = transliterate(&UKRANIAN, Language::Ukranian, false);
 }
@@ -43,10 +64,20 @@ fn to_ua(_n: u64) {
 fn criterion_benchmark(c: &mut Criterion) {
     c.bench_function("from_bg", |b| b.iter(|| from_bg(black_box(20))));
     c.bench_function("to_bg", |b| b.iter(|| to_bg(black_box(20))));
+
     c.bench_function("from_hy", |b| b.iter(|| from_hy(black_box(20))));
     c.bench_function("to_hy", |b| b.iter(|| to_hy(black_box(20))));
+
     c.bench_function("from_ru", |b| b.iter(|| from_ru(black_box(20))));
     c.bench_function("to_ru", |b| b.iter(|| to_ru(black_box(20))));
+
+    c.bench_function("from_sr", |b| b.iter(|| from_sr(black_box(20))));
+    c.bench_function("to_sr", |b| b.iter(|| to_sr(black_box(20))));
+    c.bench_function("from_sr_pangram", |b| {
+        b.iter(|| from_sr_pangram(black_box(20)))
+    });
+    c.bench_function("to_sr_pangram", |b| b.iter(|| to_sr_pangram(black_box(20))));
+
     c.bench_function("from_ua", |b| b.iter(|| from_ua(black_box(20))));
     c.bench_function("to_ua", |b| b.iter(|| to_ua(black_box(20))));
 }

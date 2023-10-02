@@ -9,6 +9,7 @@ It comes with language packs for the following languages:
 - Armenian
 - Bulgarian (beta)
 - Russian
+- Serbian (alpha)
 - Ukrainian (beta)
 
 ## Usage and examples

@@ -1,6 +1,7 @@
 mod armenian;
 mod bulgarian;
 mod russian;
+mod serbian;
 mod ukranian;
 
 /// See
@@ -23,6 +24,13 @@ pub use bulgarian::Bulgarian;
 ///
 /// Based on the work of Artur Barseghyan.
 pub use russian::Russian;
+
+/// See
+/// [https://en.wikipedia.org/wiki/Romanization_of_Serbian](https://en.wikipedia.org/wiki/Romanization_of_Serbian)
+/// for details.
+///
+/// Based on the work of Saša Kelečević.
+pub use serbian::Serbian;
 
 /// See
 /// [http://en.wikipedia.org/wiki/Ukrainian_alphabet](http://en.wikipedia.org/wiki/Ukrainian_alphabet)

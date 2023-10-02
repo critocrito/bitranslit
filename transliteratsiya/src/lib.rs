@@ -23,7 +23,7 @@ pub mod languages;
 pub mod transliterator;
 
 use crate::{
-    languages::{Armenian, Bulgarian, Russian, Ukranian},
+    languages::{Armenian, Bulgarian, Russian, Serbian, Ukranian},
     transliterator::{FromLatin, ToLatin, Transliterator},
 };
 
@@ -34,6 +34,7 @@ pub enum Language {
     Armenian,
     Bulgarian,
     Russian,
+    Serbian,
     Ukranian,
 }
 
@@ -52,6 +53,7 @@ pub fn transliterate(input: &str, language: Language, reverse: bool) -> String {
         Language::Armenian => Transliterator::from(Armenian::new()),
         Language::Bulgarian => Transliterator::from(Bulgarian::new()),
         Language::Russian => Transliterator::from(Russian::new()),
+        Language::Serbian => Transliterator::from(Serbian::new()),
         Language::Ukranian => Transliterator::from(Ukranian::new()),
     };
 
@@ -69,6 +71,11 @@ mod tests {
     const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
     const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
     const RUSSIAN: &'static str = "Лорем ипсум долор сит амет";
+    const SERBIAN: &'static str = "Лорем ипсум долор сит амет";
+    const PANGRAM_SERBIAN: &'static str =
+        "Фијуче ветар у шибљу, леди пасаже и куће иза њих и гунђа у оџацима";
+    const PANGRAM_LATIN: &'static str =
+        "Fijuče vetar u šiblju, ledi pasaže i kuće iza njih i gunđa u odžacima";
     const UKRANIAN: &'static str = "Лорем іпсум долор сіт амет";
 
     #[test]
@@ -111,6 +118,34 @@ mod tests {
         let output = transliterate(&LATIN, Language::Russian, true);
 
         assert_eq!(output, RUSSIAN.to_string());
+    }
+
+    #[test]
+    fn serbian_to_latin() {
+        let output = transliterate(&SERBIAN, Language::Serbian, false);
+
+        assert_eq!(output, LATIN.to_string());
+    }
+
+    #[test]
+    fn latin_to_serbian() {
+        let output = transliterate(&LATIN, Language::Serbian, true);
+
+        assert_eq!(output, SERBIAN.to_string());
+    }
+
+    #[test]
+    fn pangram_serbian_to_latin() {
+        let output = transliterate(&PANGRAM_SERBIAN, Language::Serbian, false);
+
+        assert_eq!(output, PANGRAM_LATIN.to_string());
+    }
+
+    #[test]
+    fn latin_to_pangram_serbian() {
+        let output = transliterate(&PANGRAM_LATIN, Language::Serbian, true);
+
+        assert_eq!(output, PANGRAM_SERBIAN.to_string());
     }
 
     #[test]
