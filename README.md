@@ -10,6 +10,7 @@ It comes with language packs for the following languages:
 - Bulgarian (beta)
 - Greek
 - Latin1
+- Makedonian (alpha)
 - Russian
 - Serbian (alpha)
 - Ukrainian (beta)

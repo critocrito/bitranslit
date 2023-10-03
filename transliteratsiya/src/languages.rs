@@ -2,6 +2,7 @@ mod armenian;
 mod bulgarian;
 mod greek;
 mod latin1;
+mod makedonian;
 mod russian;
 mod serbian;
 mod ukranian;
@@ -36,6 +37,13 @@ pub use greek::Greek;
 ///
 /// Based on the work of Marco Pattaro.
 pub use latin1::Latin1;
+
+/// See
+/// [http://en.wikipedia.org/wiki/Romanization_of_Macedonian](http://en.wikipedia.org/wiki/Romanization_of_Macedonian)
+/// for details.
+///
+/// Based on the work of Igor Stamatovski.
+pub use makedonian::Makedonian;
 
 /// See
 /// [http://en.wikipedia.org/wiki/Russian_alphabet](http://en.wikipedia.org/wiki/Russian_alphabet)

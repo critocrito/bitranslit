@@ -23,7 +23,7 @@ pub mod languages;
 pub mod transliterator;
 
 use crate::{
-    languages::{Armenian, Bulgarian, Greek, Latin1, Russian, Serbian, Ukranian},
+    languages::{Armenian, Bulgarian, Greek, Latin1, Makedonian, Russian, Serbian, Ukranian},
     transliterator::{FromLatin, ToLatin, Transliterator},
 };
 
@@ -35,6 +35,7 @@ pub enum Language {
     Bulgarian,
     Greek,
     Latin1,
+    Makedonian,
     Russian,
     Serbian,
     Ukranian,
@@ -56,6 +57,7 @@ pub fn transliterate(input: &str, language: Language, reverse: bool) -> String {
         Language::Bulgarian => Transliterator::from(Bulgarian::new()),
         Language::Greek => Transliterator::from(Greek::new()),
         Language::Latin1 => Transliterator::from(Latin1::new()),
+        Language::Makedonian => Transliterator::from(Makedonian::new()),
         Language::Russian => Transliterator::from(Russian::new()),
         Language::Serbian => Transliterator::from(Serbian::new()),
         Language::Ukranian => Transliterator::from(Ukranian::new()),
