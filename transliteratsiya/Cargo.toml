@@ -8,7 +8,10 @@ keywords = [
   "transliterator",
   "transliteration-armenian",
   "transliteration-bulgarian",
+  "transliteration-greek",
+  "transliteration-macedonian",
   "transliteration-russian",
+  "transliteration-serbian",
   "transliteration-ukranian"
 ]
 license = "LGPL-2.1-or-later"
