@@ -1,8 +1,8 @@
 [package]
-name = "transliteratsiya_derive"
+name = "bitranslit_derive"
 version = "0.1.0"
 edition = "2021"
-description = "Macros for transliteratsiya, the bi-directional transliterator for Rust."
+description = "Macros for bitranslit, the bi-directional transliterator for Rust."
 keywords = [
   "transliteration",
   "transliterator",
@@ -12,8 +12,8 @@ keywords = [
   "transliteration-ukranian"
 ]
 license = "LGPL-2.1-or-later"
-repository = "https://github.com/critocrito/transliteratsiya"
-homepage = "https://github.com/critocrito/transliteratsiya"
+repository = "https://github.com/critocrito/bitranslit"
+homepage = "https://github.com/critocrito/bitranslit"
 readme = "../README.md"
 
 

@@ -20,7 +20,7 @@ pub trait FromLatin {
 /// from one of the available language packs.
 ///
 /// ```rust
-/// use transliteratsiya::{
+/// use bitranslit::{
 ///     languages::Bulgarian,
 ///     transliterator::{Transliterator, ToLatin, FromLatin}
 /// };
@@ -40,7 +40,7 @@ pub trait FromLatin {
 /// language and character mapping of type [`CharsMapping`].
 ///
 /// ```rust
-/// use transliteratsiya::{
+/// use bitranslit::{
 ///     languages::Bulgarian,
 ///     transliterator::{TransliteratorBuilder, ToLatin, CharsMapping}
 /// };

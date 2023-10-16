@@ -5,7 +5,7 @@
 //! The easiest way to use this crate is to use the [`transliterate`] utility function.
 //!
 //! ```rust
-//! use transliteratsiya::{transliterate, Language};
+//! use bitranslit::{transliterate, Language};
 //!
 //! # fn main() {
 //! const LATIN: &'static str = "Lorem ipsum dolor sit amet";
@@ -27,7 +27,7 @@ use crate::{
     transliterator::{FromLatin, ToLatin, Transliterator},
 };
 
-pub use transliteratsiya_derive::language_pack;
+pub use bitranslit_derive::language_pack;
 
 /// Languages that support transliteration.
 pub enum Language {
@@ -45,7 +45,7 @@ pub enum Language {
 /// supported languages.
 ///
 /// ```rust
-/// use transliteratsiya::{Language, transliterate};
+/// use bitranslit::{Language, transliterate};
 ///
 /// # fn main() {
 /// let _ = transliterate("Никой не е по-голям от хляба", Language::Bulgarian, false);
@@ -73,112 +73,112 @@ pub fn transliterate(input: &str, language: Language, reverse: bool) -> String {
 mod tests {
     use super::*;
 
-    const LATIN: &'static str = "Lorem ipsum dolor sit amet";
-    const ARMENIAN: &'static str = "Լօրեմ իպսում դօլօր սիտ ամետ";
-    const BULGARIAN: &'static str = "Лорем ипсум долор сит амет";
-    const GREEK: &'static str = "Λορεμ ιψυμ δολορ σιτ αμετ";
-    const RUSSIAN: &'static str = "Лорем ипсум долор сит амет";
-    const SERBIAN: &'static str = "Лорем ипсум долор сит амет";
-    const PANGRAM_SERBIAN: &'static str =
+    const LATIN: &str = "Lorem ipsum dolor sit amet";
+    const ARMENIAN: &str = "Լօրեմ իպսում դօլօր սիտ ամետ";
+    const BULGARIAN: &str = "Лорем ипсум долор сит амет";
+    const GREEK: &str = "Λορεμ ιψυμ δολορ σιτ αμετ";
+    const RUSSIAN: &str = "Лорем ипсум долор сит амет";
+    const SERBIAN: &str = "Лорем ипсум долор сит амет";
+    const PANGRAM_SERBIAN: &str =
         "Фијуче ветар у шибљу, леди пасаже и куће иза њих и гунђа у оџацима";
-    const PANGRAM_LATIN: &'static str =
+    const PANGRAM_LATIN: &str =
         "Fijuče vetar u šiblju, ledi pasaže i kuće iza njih i gunđa u odžacima";
-    const UKRANIAN: &'static str = "Лорем іпсум долор сіт амет";
+    const UKRANIAN: &str = "Лорем іпсум долор сіт амет";
 
     #[test]
     fn armenian_to_latin() {
-        let output = transliterate(&ARMENIAN, Language::Armenian, false);
+        let output = transliterate(ARMENIAN, Language::Armenian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_armenian() {
-        let output = transliterate(&LATIN, Language::Armenian, true);
+        let output = transliterate(LATIN, Language::Armenian, true);
 
         assert_eq!(output, ARMENIAN.to_string());
     }
 
     #[test]
     fn bulgarian_to_latin() {
-        let output = transliterate(&BULGARIAN, Language::Bulgarian, false);
+        let output = transliterate(BULGARIAN, Language::Bulgarian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_bulgarian() {
-        let output = transliterate(&LATIN, Language::Bulgarian, true);
+        let output = transliterate(LATIN, Language::Bulgarian, true);
 
         assert_eq!(output, BULGARIAN.to_string());
     }
 
     #[test]
     fn greek_to_latin() {
-        let output = transliterate(&GREEK, Language::Greek, false);
+        let output = transliterate(GREEK, Language::Greek, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_greek() {
-        let output = transliterate(&LATIN, Language::Greek, true);
+        let output = transliterate(LATIN, Language::Greek, true);
 
         assert_eq!(output, GREEK.to_string());
     }
 
     #[test]
     fn russian_to_latin() {
-        let output = transliterate(&RUSSIAN, Language::Russian, false);
+        let output = transliterate(RUSSIAN, Language::Russian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_russian() {
-        let output = transliterate(&LATIN, Language::Russian, true);
+        let output = transliterate(LATIN, Language::Russian, true);
 
         assert_eq!(output, RUSSIAN.to_string());
     }
 
     #[test]
     fn serbian_to_latin() {
-        let output = transliterate(&SERBIAN, Language::Serbian, false);
+        let output = transliterate(SERBIAN, Language::Serbian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_serbian() {
-        let output = transliterate(&LATIN, Language::Serbian, true);
+        let output = transliterate(LATIN, Language::Serbian, true);
 
         assert_eq!(output, SERBIAN.to_string());
     }
 
     #[test]
     fn pangram_serbian_to_latin() {
-        let output = transliterate(&PANGRAM_SERBIAN, Language::Serbian, false);
+        let output = transliterate(PANGRAM_SERBIAN, Language::Serbian, false);
 
         assert_eq!(output, PANGRAM_LATIN.to_string());
     }
 
     #[test]
     fn latin_to_pangram_serbian() {
-        let output = transliterate(&PANGRAM_LATIN, Language::Serbian, true);
+        let output = transliterate(PANGRAM_LATIN, Language::Serbian, true);
 
         assert_eq!(output, PANGRAM_SERBIAN.to_string());
     }
 
     #[test]
     fn ukranian_to_latin() {
-        let output = transliterate(&UKRANIAN, Language::Ukranian, false);
+        let output = transliterate(UKRANIAN, Language::Ukranian, false);
 
         assert_eq!(output, LATIN.to_string());
     }
 
     #[test]
     fn latin_to_ukranian() {
-        let output = transliterate(&LATIN, Language::Ukranian, true);
+        let output = transliterate(LATIN, Language::Ukranian, true);
 
         assert_eq!(output, UKRANIAN.to_string());
     }

@@ -1,5 +1,5 @@
 [package]
-name = "transliteratsiya"
+name = "bitranslit"
 version = "0.1.0"
 edition = "2021"
 description = "Bi-directional transliterator for Rust. Transliterates strings according to the rules specified in the language packs."
@@ -15,12 +15,12 @@ keywords = [
   "transliteration-ukranian"
 ]
 license = "LGPL-2.1-or-later"
-repository = "https://github.com/critocrito/transliteratsiya"
-homepage = "https://github.com/critocrito/transliteratsiya"
+repository = "https://github.com/critocrito/bitranslit"
+homepage = "https://github.com/critocrito/bitranslit"
 readme = "../README.md"
 
 [dependencies]
-transliteratsiya_derive = { path = "../transliteratsiya_derive" }
+bitranslit_derive = { path = "../bitranslit_derive" }
 lazy_static = "1.4"
 derive_builder = "0.12.0"
 

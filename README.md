@@ -13,14 +13,14 @@
 
 <br />
 <div align="center">
-  <h3 align="center">Transliteratsiya</h3>
+  <h3 align="center">Bitranslit</h3>
 
   <p align="center">
     Bi-directional transliterator for Rust.
     <br />
-    <a href="https://github.com/critocrito/transliteratsiya/issues">Report Bug</a>
+    <a href="https://github.com/critocrito/bitranslit/issues">Report Bug</a>
     ·
-    <a href="https://github.com/critocrito/transliteratsiya/issues">Request Feature</a>
+    <a href="https://github.com/critocrito/bitranslit/issues">Request Feature</a>
   </p>
 </div>
 
@@ -69,7 +69,7 @@ It comes with language packs for the following languages:
 ### Installation
 
 ```sh
-cargo add transliteratsiya
+cargo add bitranslit
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -79,7 +79,7 @@ cargo add transliteratsiya
 
 
 ``` rust
-use transliteratsiya::Bulgarian;
+use bitranslit::Bulgarian;
 
 let t = Bulgarian::new();
 
@@ -117,25 +117,25 @@ Distributed under the LGPL-2.1-or-later License. See `LICENSE.txt` for more info
 
 Christo Buschek - [@christo_buschek](https://twitter.com/christo_buschek) - christo.buschek@proton.me
 
-Project Link: [https://github.com/critocrito/transliteratsiya](https://github.com/critocrito/transliteratsiya)
+Project Link: [https://github.com/critocrito/bitranslit](https://github.com/critocrito/bitranslit)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
-[contributors-shield]: https://img.shields.io/github/contributors/critocrito/transliteratsiya.svg?style=for-the-badge
-[contributors-url]: https://github.com/critocrito/transliteratsiya/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/critocrito/transliteratsiya.svg?style=for-the-badge
-[forks-url]: https://github.com/critocrito/transliteratsiya/network/members
-[stars-shield]: https://img.shields.io/github/stars/critocrito/transliteratsiya.svg?style=for-the-badge
-[stars-url]: https://github.com/critocrito/transliteratsiya/stargazers
-[issues-shield]: https://img.shields.io/github/issues/critocrito/transliteratsiya.svg?style=for-the-badge
-[issues-url]: https://github.com/critocrito/transliteratsiya/issues
-[license-shield]: https://img.shields.io/github/license/critocrito/transliteratsiya.svg?style=for-the-badge
-[license-url]: https://github.com/critocrito/transliteratsiya/blob/master/LICENSE.txt
-[crates-io-shield]: https://img.shields.io/crates/v/transliteratsiya.svg?style=for-the-badge
-[crates-io-url]: https://crates.io/crates/transliteratsiya
-[docs-rs-shield]: https://img.shields.io/docsrs/transliteratsiya?style=for-the-badge
-[docs-rs-url]:https://docs.rs/transliteratsiya
-[ci-shield]: https://img.shields.io/github/actions/workflow/status/critocrito/transliteratsiya/CI?style=for-the-badge
-[ci-url]: https://github.com/critocrito/transliteratsiya/actions
+[contributors-shield]: https://img.shields.io/github/contributors/critocrito/bitranslit.svg?style=for-the-badge
+[contributors-url]: https://github.com/critocrito/bitranslit/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/critocrito/bitranslit.svg?style=for-the-badge
+[forks-url]: https://github.com/critocrito/bitranslit/network/members
+[stars-shield]: https://img.shields.io/github/stars/critocrito/bitranslit.svg?style=for-the-badge
+[stars-url]: https://github.com/critocrito/bitranslit/stargazers
+[issues-shield]: https://img.shields.io/github/issues/critocrito/bitranslit.svg?style=for-the-badge
+[issues-url]: https://github.com/critocrito/bitranslit/issues
+[license-shield]: https://img.shields.io/github/license/critocrito/bitranslit.svg?style=for-the-badge
+[license-url]: https://github.com/critocrito/bitranslit/blob/master/LICENSE.txt
+[crates-io-shield]: https://img.shields.io/crates/v/bitranslit.svg?style=for-the-badge
+[crates-io-url]: https://crates.io/crates/bitranslit
+[docs-rs-shield]: https://img.shields.io/docsrs/bitranslit?style=for-the-badge
+[docs-rs-url]:https://docs.rs/bitranslit
+[ci-shield]: https://img.shields.io/github/actions/workflow/status/critocrito/bitranslit/CI?style=for-the-badge
+[ci-url]: https://github.com/critocrito/bitranslit/actions

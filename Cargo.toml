@@ -1,6 +1,6 @@
 [workspace]
 members = [
-    "transliteratsiya",
-    "transliteratsiya_derive",
+    "bitranslit",
+    "bitranslit_derive",
 ]
 resolver = "2"

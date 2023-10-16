@@ -1,5 +1,5 @@
+use bitranslit_derive::language_pack;
 use lazy_static::lazy_static;
-use transliteratsiya_derive::language_pack;
 
 lazy_static! {
     static ref MAPPING: [(&'static str, &'static str); 44] = include!("../standards/mk/mapping.in");
