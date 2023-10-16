@@ -62,6 +62,8 @@ It comes with language packs for the following languages:
 - Serbian (alpha)
 - Ukrainian (beta)
 
+This code was developed to support investigations that took place at [Der SPIEGEL](https://www.spiegel.de) and [Paper Trail Media](https://www.papertrailmedia.de).
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Getting Started
