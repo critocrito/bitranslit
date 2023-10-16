@@ -6,13 +6,7 @@ description = "Bi-directional transliterator for Rust. Transliterates strings ac
 keywords = [
   "transliteration",
   "transliterator",
-  "transliteration-armenian",
-  "transliteration-bulgarian",
-  "transliteration-greek",
-  "transliteration-macedonian",
-  "transliteration-russian",
-  "transliteration-serbian",
-  "transliteration-ukranian"
+  "bi-directional"
 ]
 categories = [
   "text-processing",
