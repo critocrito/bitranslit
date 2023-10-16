@@ -139,5 +139,5 @@ Project Link: [https://github.com/critocrito/bitranslit](https://github.com/crit
 [crates-io-url]: https://crates.io/crates/bitranslit
 [docs-rs-shield]: https://img.shields.io/docsrs/bitranslit?style=for-the-badge
 [docs-rs-url]:https://docs.rs/bitranslit
-[ci-shield]: https://img.shields.io/github/actions/workflow/status/critocrito/bitranslit/CI?style=for-the-badge
+[ci-shield]: https://img.shields.io/github/actions/workflow/status/critocrito/bitranslit/ci.yml?style=for-the-badge
 [ci-url]: https://github.com/critocrito/bitranslit/actions
