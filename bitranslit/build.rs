@@ -132,6 +132,10 @@ fn write_standard_in_file(in_file: &Path, out_file: &mut File) -> Result<(), std
 }
 
 fn main() {
+    if std::env::var("DOCS_RS").is_ok() {
+        return;
+    }
+
     println!("cargo:rerun-if-changed=build.rs");
     println!("cargo:rerun-if-changed=Cargo.lock");
 
