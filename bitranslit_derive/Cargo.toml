@@ -6,16 +6,18 @@ description = "Macros for bitranslit, the bi-directional transliterator for Rust
 keywords = [
   "transliteration",
   "transliterator",
-  "transliteration-armenian",
-  "transliteration-bulgarian",
-  "transliteration-russian",
-  "transliteration-ukranian"
+  "bi-directional"
+]
+categories = [
+  "text-processing",
+  "internationalization",
+  "encoding"
 ]
 license = "LGPL-2.1-or-later"
 repository = "https://github.com/critocrito/bitranslit"
 homepage = "https://github.com/critocrito/bitranslit"
 readme = "../README.md"
-
+documentation = "https://docs.rs/bitranslit_derive"
 
 [lib]
 proc-macro = true
