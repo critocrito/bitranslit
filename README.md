@@ -137,5 +137,5 @@ Project Link: [https://github.com/critocrito/transliteratsiya](https://github.co
 [crates-io-url]: https://crates.io/crates/transliteratsiya
 [docs-rs-shield]: https://img.shields.io/docsrs/transliteratsiya?style=for-the-badge
 [docs-rs-url]:https://docs.rs/transliteratsiya
-[ci-shield]: https://github.com/critocrito/transliteratsiya/workflows/CI/badge.svg
+[ci-shield]: https://img.shields.io/github/actions/workflow/status/critocrito/transliteratsiya/CI?style=for-the-badge
 [ci-url]: https://github.com/critocrito/transliteratsiya/actions
