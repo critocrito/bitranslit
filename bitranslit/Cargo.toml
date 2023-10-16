@@ -14,10 +14,16 @@ keywords = [
   "transliteration-serbian",
   "transliteration-ukranian"
 ]
+categories = [
+  "text-processing",
+  "internationalization",
+  "encoding"
+]
 license = "LGPL-2.1-or-later"
 repository = "https://github.com/critocrito/bitranslit"
 homepage = "https://github.com/critocrito/bitranslit"
 readme = "../README.md"
+documentation = "https://docs.rs/bitranslit"
 
 [dependencies]
 bitranslit_derive = { path = "../bitranslit_derive" }
