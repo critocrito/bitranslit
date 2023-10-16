@@ -1,6 +1,6 @@
 [package]
 name = "bitranslit"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
 description = "Bi-directional transliterator for Rust. Transliterates strings according to the rules specified in the language packs."
 keywords = [
@@ -20,7 +20,7 @@ readme = "../README.md"
 documentation = "https://docs.rs/bitranslit"
 
 [dependencies]
-bitranslit_derive = { path = "../bitranslit_derive", version = "0.1.0" }
+bitranslit_derive = { path = "../bitranslit_derive", version = "=0.2.0" }
 lazy_static = "1.4"
 derive_builder = "0.12.0"
 
