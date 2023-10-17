@@ -70,6 +70,12 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
         Item::Struct(expr) => {
             let language = expr.ident;
             let language_label = language.to_string().to_lowercase();
+            let code_field = expr
+                .fields
+                .iter()
+                .find(|&f| *f.ident.as_ref().unwrap() == "code")
+                .unwrap();
+
             let mapping_field = expr
                 .fields
                 .iter()
@@ -90,6 +96,14 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 .fields
                 .iter()
                 .find(|&f| *f.ident.as_ref().unwrap() == "reverse_specific_pre_processor_mapping");
+
+            let code = match &code_field.ty {
+                Type::Path(type_path) => {
+                    let code = &type_path.path.segments.first().unwrap().ident;
+                    quote! { #code }
+                }
+                _ => panic!("Not a valid language code for language {}", language),
+            };
 
             let mapping = match &mapping_field.ty {
                 Type::Path(type_path) => {
@@ -155,11 +169,15 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                 #[derive(Clone, Debug)]
                 pub struct #language {
                     language: String,
+                    code: String,
                 }
 
                 impl Default for #language {
                     fn default() -> Self {
-                        Self { language: #language_label.to_string() }
+                        Self {
+                            language: #language_label.to_string(),
+                            code: #code.to_string()
+                        }
                     }
                 }
 
@@ -173,6 +191,7 @@ pub fn language_pack(tokens: TokenStream) -> TokenStream {
                     fn from(language: #language) -> Self {
                         TransliteratorBuilder::default()
                             .language(language.language)
+                            .code(language.code)
                             .mapping(#mapping)
                             .pre_processor_mapping(#pre_processor_mapping)
                             .reverse_specific_mapping(#reverse_specific_mapping)

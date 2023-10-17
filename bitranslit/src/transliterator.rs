@@ -47,10 +47,12 @@ pub trait FromLatin {
 ///
 /// # fn main() {
 /// let language = "MyLanguage".to_string();
+/// let code = "ml".to_string();
 /// let mapping: CharsMapping = [("a", "c"), ("b", "d")].iter().cloned().collect();
 ///
 /// let t = TransliteratorBuilder::default()
 ///     .language(language)
+///     .code(code)
 ///     .mapping(mapping)
 ///     .pre_processor_mapping(None)
 ///     .reverse_specific_mapping(None)
@@ -82,6 +84,9 @@ pub struct Transliterator {
     /// The full name of the language that this [`Transliterator`] transliterates.
     #[builder(setter(into))]
     pub language: String,
+    /// The two letter language code that this [`Transliterator`] transliterates.
+    #[builder(setter(into))]
+    pub code: String,
     /// Single character mappings that work both directions.
     mapping: CharsMapping,
     /// Mappings of single characters to multiple characters that work both directions.

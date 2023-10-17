@@ -7,9 +7,11 @@ lazy_static! {
         include!("../standards/ru/pre_processor_mapping.in");
     static ref REVERSE_SPECIFIC_MAPPING: [(&'static str, &'static str); 8] =
         include!("../standards/ru/reverse_specific_mapping.in");
+    static ref CODE: &'static str = "ru";
 }
 
 language_pack!(Russian {
+    code: CODE,
     mapping: MAPPING,
     pre_processor_mapping: PRE_PROCESSOR_MAPPING,
     reverse_specific_mapping: REVERSE_SPECIFIC_MAPPING,
