@@ -99,7 +99,7 @@ pub struct Transliterator {
 }
 
 impl Transliterator {
-    fn translit(&self, input: &str, reverse: bool) -> String {
+    fn transliterate(&self, input: &str, reverse: bool) -> String {
         let mut input = input.to_owned();
 
         if reverse {
@@ -148,18 +148,46 @@ impl Transliterator {
 
 impl ToLatin for Transliterator {
     fn translit(&self, input: &str) -> String {
-        self.translit(input, false)
+        self.transliterate(input, false)
     }
 }
 
 impl FromLatin for Transliterator {
     fn translit_reverse(&self, input: &str) -> String {
-        self.translit(input, true)
+        self.transliterate(input, true)
     }
 }
 
 impl fmt::Display for Transliterator {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.language)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use crate::languages::Bulgarian;
+
+    const BULGARIAN: &str = "Лорем ипсум долор сит амет";
+    const LATIN: &str = "Lorem ipsum dolor sit amet";
+
+    #[test]
+    fn test_translit() {
+        let t = Transliterator::from(Bulgarian::new());
+
+        let result = t.translit(BULGARIAN);
+
+        assert_eq!(result, LATIN);
+    }
+
+    #[test]
+    fn test_translit_reverse() {
+        let t = Transliterator::from(Bulgarian::new());
+
+        let result = t.translit_reverse(LATIN);
+
+        assert_eq!(result, BULGARIAN);
     }
 }
