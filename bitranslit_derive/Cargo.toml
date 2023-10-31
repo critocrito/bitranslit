@@ -1,6 +1,6 @@
 [package]
 name = "bitranslit_derive"
-version = "0.3.0"
+version = "0.3.1"
 edition = "2021"
 description = "Macros for bitranslit, the bi-directional transliterator for Rust."
 keywords = [
